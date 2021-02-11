@@ -5,11 +5,11 @@ import android.os.Looper
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class AppExecutor {
+class AppMultithreading {
     private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
     private val executor: ExecutorService by lazy {
         Executors.newFixedThreadPool(
-            NETWORK_THREAD_COUNT
+            THREAD_COUNT
         )
     }
 
@@ -18,6 +18,6 @@ class AppExecutor {
     }
 
     companion object {
-        private const val NETWORK_THREAD_COUNT = 2
+        private const val THREAD_COUNT = 2
     }
 }

@@ -1,4 +1,4 @@
-package krasnikov.project.postsapp.data
+package krasnikov.project.postsapp.utils
 
 sealed class Result<out T> {
     data class Success<out T>(val data: T) : Result<T>()

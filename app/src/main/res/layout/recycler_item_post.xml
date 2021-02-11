@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/post_card_height">
+
+        <TextView
+            android:id="@+id/tvUserId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="UserId: 1" />
+
+        <TextView
+            android:id="@+id/tvWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/text_with_warning"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/tvUserId"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="UserId: 1" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvWarning"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/tvBody"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUserId"
+            tools:text="body" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -25,6 +25,14 @@ class AsyncOperation<T>(
 
         return CancelableOperation { future.cancel(true) }
     }
+
+    fun <R> map(transformation: (T) -> R): AsyncOperation<R> {
+        return AsyncOperation(
+            operation = { transformation(operation()) },
+            mainHandler = mainHandler,
+            executor = executor
+        )
+    }
 }
 
 fun interface CancelableOperation {
