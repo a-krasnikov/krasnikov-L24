@@ -1,12 +1,10 @@
 package krasnikov.project.postsapp.app.di
 
-import krasnikov.project.postsapp.postsfeed.post.data.source.remote.RemotePostDataSource
-import krasnikov.project.postsapp.postsfeed.post.data.source.remote.RemotePostDataSourceImpl
-import krasnikov.project.postsapp.postsfeed.userstatus.data.source.local.LocalUserStatusDataSource
-import krasnikov.project.postsapp.postsfeed.userstatus.data.source.local.LocalUserStatusDataSourceImpl
+import krasnikov.project.postsapp.feed.post.data.source.local.LocalPostDataSource
+import krasnikov.project.postsapp.feed.post.data.source.remote.RemotePostDataSource
 import org.koin.dsl.module
 
 val dataSourceModule = module {
-    single<RemotePostDataSource> { RemotePostDataSourceImpl(get(), get()) }
-    single<LocalUserStatusDataSource> { LocalUserStatusDataSourceImpl() }
+    single { RemotePostDataSource(get(), get()) }
+    single { LocalPostDataSource(get(), get()) }
 }
