@@ -10,7 +10,7 @@ import krasnikov.project.postsapp.feed.post.data.source.local.entity.PostEntity
 interface PostDao {
 
     @Query("SELECT * FROM posts")
-    fun getPosts(): List<PostEntity>
+    fun observePosts(): LiveData<List<PostEntity>>
 
     @Insert
     fun insert(post: PostEntity)
@@ -18,6 +18,6 @@ interface PostDao {
     @Insert
     fun insertAll(posts: Collection<PostEntity>)
 
-    @Query("DELETE FROM posts")
-    fun deletePosts()
+    @Query("DELETE FROM posts where is_local = 0")
+    fun deleteRemotePosts()
 }

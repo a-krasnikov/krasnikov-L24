@@ -5,6 +5,7 @@ data class PostModel(
     val userId: Long,
     val title: String,
     val body: String,
+    val isLocal: Boolean,
     val status: Status,
 )
 

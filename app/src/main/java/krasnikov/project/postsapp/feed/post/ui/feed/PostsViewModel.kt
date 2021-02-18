@@ -2,38 +2,47 @@ package krasnikov.project.postsapp.feed.post.ui.feed
 
 import androidx.lifecycle.*
 import krasnikov.project.postsapp.feed.post.data.repository.PostRepository
+import krasnikov.project.postsapp.feed.post.domain.SortPostsUseCase
 import krasnikov.project.postsapp.feed.post.ui.common.mapper.PostUIMapper
 import krasnikov.project.postsapp.feed.post.ui.common.model.PostUIModel
 import krasnikov.project.postsapp.utils.CancelableOperation
 import krasnikov.project.postsapp.utils.Result
+import krasnikov.project.postsapp.utils.mapAsync
 
 class PostsViewModel(
     private val postRepository: PostRepository,
-    private val postUIMapper: PostUIMapper
+    private val postUIMapper: PostUIMapper,
+    private val sortPostsUseCase: SortPostsUseCase
 ) : ViewModel() {
+
+    init {
+        loadPostsFromRemote()
+    }
+
+    val posts: LiveData<Result<List<PostUIModel>>> by lazy {
+        postRepository.observePosts().mapAsync { result ->
+            result.map {
+                postUIMapper.map(
+                    sortPostsUseCase.invoke(it)
+                )
+            }
+        }
+    }
 
     private lateinit var cancelableOperation: CancelableOperation
 
-    private val posts by lazy { MutableLiveData<List<PostUIModel>>() }
-    private val loadedSuccess by lazy { MutableLiveData<Boolean>() }
+    private val _errorLoadFromRemote by lazy { MutableLiveData(false) }
+    val errorLoadFromRemote
+        get() = _errorLoadFromRemote as LiveData<Boolean>
 
-    val postsLiveData: LiveData<List<PostUIModel>>
-        get() = posts
-
-    val loadedSuccessLiveData: LiveData<Boolean>
-        get() = loadedSuccess
-
-    fun loadData() {
-        cancelableOperation = postRepository.getPosts().map { result ->
-            result.map { postUIMapper.map(it) }
-        }.postOnMainThread {
+    fun loadPostsFromRemote() {
+        cancelableOperation = postRepository.refreshPostsFromRemote().postOnMainThread {
             when (it) {
                 is Result.Success -> {
-                    posts.postValue(it.data)
-                    loadedSuccess.postValue(true)
+                    _errorLoadFromRemote.postValue(false)
                 }
                 is Result.Error -> {
-                    loadedSuccess.postValue(false)
+                    _errorLoadFromRemote.postValue(true)
                 }
             }
         }

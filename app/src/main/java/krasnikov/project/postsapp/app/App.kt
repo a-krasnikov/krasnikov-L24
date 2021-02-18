@@ -7,9 +7,10 @@ import org.koin.android.ext.koin.androidContext
 class App : Application() {
 
     companion object {
-
         lateinit var instance: App
             private set
+
+        const val userId: Long = 2
     }
 
     override fun onCreate() {
@@ -30,6 +31,7 @@ class App : Application() {
                     mapperModule,
                     repositoryModule,
                     viewModelModule,
+                    useCaseModule
                 )
             )
         }

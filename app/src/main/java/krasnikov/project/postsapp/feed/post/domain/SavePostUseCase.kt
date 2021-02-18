@@ -1,7 +1,8 @@
 package krasnikov.project.postsapp.feed.post.domain
 
 import krasnikov.project.postsapp.feed.post.data.repository.PostRepository
-import krasnikov.project.postsapp.feed.post.domain.model.PostModel
+import krasnikov.project.postsapp.feed.post.data.source.local.entity.PostEntity
+import krasnikov.project.postsapp.feed.post.domain.validate.PostValidator
 import krasnikov.project.postsapp.utils.Result
 
 class SavePostUseCase(
@@ -9,10 +10,12 @@ class SavePostUseCase(
     private val postValidator: PostValidator
 ) {
 
-    fun invoke(post: PostModel): Result<Unit> {
-        postValidator.validate(post)
-        repository.savePost(post)
+    fun invoke(post: PostEntity): Result<Unit> {
+        val validationResult = postValidator.validate(post)
 
-        return Result.Success(Unit)
+        if (validationResult is Result.Success)
+            repository.savePost(post)
+
+        return validationResult
     }
 }

@@ -5,13 +5,10 @@ import krasnikov.project.postsapp.feed.userstatus.data.dao.BannedUserDao
 import krasnikov.project.postsapp.feed.userstatus.data.dao.WarningUserDao
 import krasnikov.project.postsapp.feed.userstatus.data.entity.BannedUserEntity
 import krasnikov.project.postsapp.feed.userstatus.data.entity.WarningUserEntity
-import krasnikov.project.postsapp.utils.AppMultithreading
-import krasnikov.project.postsapp.utils.AsyncOperation
 
 class UserStatusRepository(
     private val bannedUserDao: BannedUserDao,
     private val warningUserDao: WarningUserDao,
-    private val multithreading: AppMultithreading
 ) {
 
     private val bannedUsers = hashSetOf<BannedUserEntity>()

@@ -6,13 +6,15 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "posts")
 data class PostEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo(name = "user_id")
     val userId: Long,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "body")
-    val body: String
+    val body: String,
+    @ColumnInfo(name = "is_local")
+    val isLocal: Boolean
 )

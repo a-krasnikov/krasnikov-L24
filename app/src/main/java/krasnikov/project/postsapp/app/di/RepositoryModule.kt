@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single { PostRepository(get(), get(), get(), get()) }
-    single { UserStatusRepository(get(), get(), get()) }
+    single { UserStatusRepository(get(), get()) }
 }

@@ -1,12 +1,15 @@
 package krasnikov.project.postsapp.feed.post.data.repository
 
+import androidx.lifecycle.LiveData
 import krasnikov.project.postsapp.feed.post.data.mapper.PostEntityMapper
 import krasnikov.project.postsapp.feed.post.data.mapper.PostResponseMapper
 import krasnikov.project.postsapp.feed.post.data.source.local.LocalPostDataSource
+import krasnikov.project.postsapp.feed.post.data.source.local.entity.PostEntity
 import krasnikov.project.postsapp.feed.post.data.source.remote.RemotePostDataSource
 import krasnikov.project.postsapp.utils.Result
 import krasnikov.project.postsapp.feed.post.domain.model.PostModel
 import krasnikov.project.postsapp.utils.AsyncOperation
+import krasnikov.project.postsapp.utils.mapAsync
 
 class PostRepository(
     private val remoteDataSource: RemotePostDataSource,
@@ -15,25 +18,20 @@ class PostRepository(
     private val postEntityMapper: PostEntityMapper
 ) {
 
-    fun getPosts(): AsyncOperation<Result<List<PostModel>>> {
-        return localDataSource.getPosts()
-            .map { result -> result.map { postEntityMapper.mapToPostModel(it) } }
+    fun observePosts(): LiveData<Result<List<PostModel>>> {
+        return localDataSource.observePosts()
+            .mapAsync { result -> result.map { postEntityMapper.map(it) } }
     }
 
-    fun savePost(post: PostModel) {
-        localDataSource.savePost(postEntityMapper.mapFromPostModel(post))
+    fun savePost(post: PostEntity) {
+        localDataSource.savePost(post)
     }
 
-    fun refreshPosts(): AsyncOperation<Result<Unit>> {
-        return updatePostsFromRemote()
-    }
-
-    private fun updatePostsFromRemote(): AsyncOperation<Result<Unit>> {
+    fun refreshPostsFromRemote(): AsyncOperation<Result<Unit>> {
         return remoteDataSource.getAllPosts().map {
             when (it) {
                 is Result.Success -> {
-                    localDataSource.deleteAllPosts()
-                    localDataSource.savePosts(postResponseMapper.map(it.data))
+                    localDataSource.refreshRemotePosts(postResponseMapper.map(it.data))
                     return@map Result.Success(Unit)
                 }
                 is Result.Error -> {

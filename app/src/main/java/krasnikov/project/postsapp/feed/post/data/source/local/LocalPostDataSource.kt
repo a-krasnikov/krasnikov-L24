@@ -7,37 +7,27 @@ import krasnikov.project.postsapp.feed.post.data.source.local.entity.PostEntity
 import krasnikov.project.postsapp.utils.AppMultithreading
 import krasnikov.project.postsapp.utils.AsyncOperation
 import krasnikov.project.postsapp.utils.Result
+import krasnikov.project.postsapp.utils.mapAsync
 
 class LocalPostDataSource(
     private val postDao: PostDao,
     private val multithreading: AppMultithreading
 ) {
 
-    fun getPosts(): AsyncOperation<Result<List<PostEntity>>> {
-        return multithreading.async {
-            return@async try {
-                Result.Success(postDao.getPosts())
-            } catch (ex: Exception) {
-                Result.Error(ex)
-            }
-        }
-    }
-
-    fun deleteAllPosts() {
-        multithreading.async {
-            postDao.deletePosts()
-        }
+    fun observePosts(): LiveData<Result<List<PostEntity>>> {
+        return postDao.observePosts().mapAsync { Result.Success(it) }
     }
 
     fun savePost(post: PostEntity) {
-        multithreading.async {
+        multithreading.executeOnBackgroundThread {
             postDao.insert(post)
-        }.postOnMainThread {}
+        }
     }
 
-    fun savePosts(posts: Collection<PostEntity>) {
-        multithreading.async {
+    fun refreshRemotePosts(posts: Collection<PostEntity>) {
+        multithreading.executeOnBackgroundThread {
+            postDao.deleteRemotePosts()
             postDao.insertAll(posts)
-        }.postOnMainThread {}
+        }
     }
 }
