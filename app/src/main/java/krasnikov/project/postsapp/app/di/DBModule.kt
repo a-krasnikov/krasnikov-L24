@@ -4,26 +4,21 @@ import android.content.Context
 import androidx.room.Room
 import krasnikov.project.postsapp.app.App
 import krasnikov.project.postsapp.app.db.AppDatabase
-import krasnikov.project.postsapp.feed.post.data.source.local.dao.PostDao
-import krasnikov.project.postsapp.feed.userstatus.data.dao.BannedUserDao
-import krasnikov.project.postsapp.feed.userstatus.data.dao.WarningUserDao
+import krasnikov.project.postsapp.post.common.data.source.local.dao.PostDao
+import krasnikov.project.postsapp.userstatus.data.dao.BannedUserDao
+import krasnikov.project.postsapp.userstatus.data.dao.WarningUserDao
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-private const val POSTS_DATABASE = "posts_database"
-
 val dbModule = module {
-    single { provideRoom(App.instance) }
+    single { provideDb(androidContext()) }
     factory { providePostDao(get()) }
     factory { provideBannedUserDao(get()) }
     factory { provideWarningUserDao(get()) }
 }
 
-fun provideRoom(context: Context): AppDatabase {
-    return Room.databaseBuilder(
-        context.applicationContext,
-        AppDatabase::class.java,
-        POSTS_DATABASE
-    ).fallbackToDestructiveMigration().build()
+fun provideDb(context: Context): AppDatabase {
+    return AppDatabase.getInstance(context)
 }
 
 fun providePostDao(database: AppDatabase): PostDao {

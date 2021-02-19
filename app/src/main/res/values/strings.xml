@@ -3,12 +3,18 @@
     <string name="text_header">User posts</string>
     <string name="item_user_id">UserId %d</string>
     <string name="text_with_warning">With Warning</string>
+    <string name="text_post_created">Post created</string>
     <string name="title_banned_post">There could be a user post% d, but it is banned</string>
-
+    <string name="title_post_user_id">Post UserId %d</string>
+    <string name="hint_title_post">Title post</string>
+    <string name="hint_body_post">Body post</string>
     <string name="btn_title_create">Create</string>
     <string name="btn_title_cancel">Cancel</string>
 
-    <string name="toast_error_loading">Error loading data</string>
-    <string name="toast_data_refreshed">Data refreshed</string>
-    <string name="toast_error_refreshing">Error refreshing data</string>
+    <!-- Error -->
+    <string name="error_loading">Error loading data</string>
+    <string name="error_refreshing">Error refreshing data</string>
+    <string name="error_post_title_content_validation">Title cannot contain the following words: Реклама, Товар, Куплю</string>
+    <string name="error_post_title_length_validation">Title must contain 3-50 characters</string>
+    <string name="error_post_body_length_validation">Body must contain 5-500 characters</string>
 </resources>

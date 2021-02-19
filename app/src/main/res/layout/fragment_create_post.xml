@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="@dimen/min_dialog_height">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="@dimen/text_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,6 +19,8 @@
         android:id="@+id/inTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/hint_title_post"
+        android:padding="@dimen/text_padding"
         app:layout_constraintTop_toBottomOf="@id/tvUserId">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -32,7 +33,9 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inBody"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_body_post"
+        android:padding="@dimen/text_padding"
         app:layout_constraintBottom_toTopOf="@id/btnCreate"
         app:layout_constraintTop_toBottomOf="@+id/inTitle">
 
@@ -40,7 +43,8 @@
             android:id="@+id/etBody"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="start" />
+            android:gravity="start"
+            android:minHeight="@dimen/min_body_height" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

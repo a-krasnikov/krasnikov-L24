@@ -1,12 +1,12 @@
 package krasnikov.project.postsapp.app.di
 
-import krasnikov.project.postsapp.feed.post.domain.validate.PostValidator
-import krasnikov.project.postsapp.feed.post.domain.SavePostUseCase
-import krasnikov.project.postsapp.feed.post.domain.SortPostsUseCase
+import krasnikov.project.postsapp.post.create.domain.CreatePostUseCase
+import krasnikov.project.postsapp.post.create.domain.validate.PostValidator
+import krasnikov.project.postsapp.post.feed.domain.SortPostsUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
-    factory { SavePostUseCase(get(), providePostValidator()) }
+    factory { CreatePostUseCase(get(), providePostValidator()) }
     factory { SortPostsUseCase() }
 }
 

@@ -1,7 +1,6 @@
 package krasnikov.project.postsapp.utils
 
 import android.os.Handler
-import java.lang.Exception
 import java.util.concurrent.ExecutorService
 
 class AsyncOperation<T>(
