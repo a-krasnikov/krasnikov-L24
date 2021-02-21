@@ -1,12 +1,12 @@
-package krasnikov.project.postsapp.post.common.data.repository
+package krasnikov.project.postsapp.post.common.data
 
 import androidx.lifecycle.LiveData
 import krasnikov.project.postsapp.post.common.data.mapper.PostEntityMapper
 import krasnikov.project.postsapp.post.common.data.mapper.PostResponseMapper
 import krasnikov.project.postsapp.post.common.data.source.local.LocalPostDataSource
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.common.data.source.remote.RemotePostDataSource
-import krasnikov.project.postsapp.post.common.domain.model.PostModel
+import krasnikov.project.postsapp.post.common.domain.PostModel
 import krasnikov.project.postsapp.utils.AsyncOperation
 import krasnikov.project.postsapp.utils.Result
 import krasnikov.project.postsapp.utils.mapAsync
@@ -18,9 +18,9 @@ class PostRepository(
     private val postEntityMapper: PostEntityMapper
 ) {
 
-    fun observePosts(): LiveData<Result<List<PostModel>>> {
+    fun observePosts(): LiveData<List<PostModel>> {
         return localDataSource.observePosts()
-            .mapAsync { result -> result.map { postEntityMapper.map(it) } }
+            .mapAsync { postEntityMapper.map(it) }
     }
 
     fun savePost(post: PostEntity) {

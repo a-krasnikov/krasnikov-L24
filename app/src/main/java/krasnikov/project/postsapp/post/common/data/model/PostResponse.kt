@@ -1,4 +1,4 @@
-package krasnikov.project.postsapp.post.common.data.source.remote.model
+package krasnikov.project.postsapp.post.common.data.model
 
 import com.google.gson.annotations.SerializedName
 

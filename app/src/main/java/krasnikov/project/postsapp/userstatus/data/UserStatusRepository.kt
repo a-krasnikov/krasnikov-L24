@@ -1,6 +1,5 @@
-package krasnikov.project.postsapp.userstatus.data.repository
+package krasnikov.project.postsapp.userstatus.data
 
-import krasnikov.project.postsapp.userstatus.data.UserStatus
 import krasnikov.project.postsapp.userstatus.data.dao.BannedUserDao
 import krasnikov.project.postsapp.userstatus.data.dao.WarningUserDao
 import krasnikov.project.postsapp.userstatus.data.entity.BannedUserEntity

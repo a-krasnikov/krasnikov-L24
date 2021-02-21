@@ -1,11 +1,11 @@
-package krasnikov.project.postsapp.post.common.data.source.local.dao
+package krasnikov.project.postsapp.post.common.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
 
 @Dao
 interface PostDao {

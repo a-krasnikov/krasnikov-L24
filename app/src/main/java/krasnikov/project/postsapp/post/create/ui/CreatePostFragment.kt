@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.app.App
 import krasnikov.project.postsapp.databinding.FragmentCreatePostBinding
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.create.domain.validate.error.ValidationError
 import krasnikov.project.postsapp.utils.Result
 import org.koin.androidx.viewmodel.ext.android.viewModel

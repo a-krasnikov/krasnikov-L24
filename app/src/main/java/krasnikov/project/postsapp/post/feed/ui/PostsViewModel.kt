@@ -1,13 +1,13 @@
 package krasnikov.project.postsapp.post.feed.ui
 
 import androidx.lifecycle.*
-import krasnikov.project.postsapp.post.common.data.repository.PostRepository
+import krasnikov.project.postsapp.post.common.data.PostRepository
 import krasnikov.project.postsapp.post.feed.domain.SortPostsUseCase
 import krasnikov.project.postsapp.post.feed.ui.mapper.PostUIMapper
 import krasnikov.project.postsapp.post.feed.ui.model.PostUIModel
 import krasnikov.project.postsapp.utils.CancelableOperation
+import krasnikov.project.postsapp.utils.Resource
 import krasnikov.project.postsapp.utils.Result
-import krasnikov.project.postsapp.utils.mapAsync
 
 class PostsViewModel(
     private val postRepository: PostRepository,
@@ -15,35 +15,30 @@ class PostsViewModel(
     private val sortPostsUseCase: SortPostsUseCase
 ) : ViewModel() {
 
-    init {
-        loadPostsFromRemote()
-    }
+    private val _content = MediatorLiveData<Resource<List<PostUIModel>>>()
 
-    val posts: LiveData<Result<List<PostUIModel>>> by lazy {
-        postRepository.observePosts().mapAsync { result ->
-            result.map {
-                postUIMapper.map(
-                    sortPostsUseCase(it)
-                )
-            }
-        }
-    }
+    val content
+        get() = _content as LiveData<Resource<List<PostUIModel>>>
 
     private lateinit var cancelableOperation: CancelableOperation
 
-    private val _errorLoadFromRemote by lazy { MutableLiveData(false) }
-    val errorLoadFromRemote
-        get() = _errorLoadFromRemote as LiveData<Boolean>
+    init {
+        loadFromDb()
+        loadPostsFromRemote()
+    }
+
+    private fun loadFromDb() {
+        _content.value = Resource.Loading
+        _content.addSource(postRepository.observePosts()) {
+            _content.value = Resource.Content(postUIMapper.map(sortPostsUseCase(it)))
+        }
+    }
 
     fun loadPostsFromRemote() {
+        _content.value = Resource.Loading
         cancelableOperation = postRepository.refreshPostsFromRemote().postOnMainThread {
-            when (it) {
-                is Result.Success -> {
-                    _errorLoadFromRemote.postValue(false)
-                }
-                is Result.Error -> {
-                    _errorLoadFromRemote.postValue(true)
-                }
+            if (it is Result.Error) {
+                _content.value = Resource.Error(it.exception)
             }
         }
     }

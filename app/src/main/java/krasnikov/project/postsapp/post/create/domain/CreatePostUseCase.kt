@@ -1,7 +1,7 @@
 package krasnikov.project.postsapp.post.create.domain
 
-import krasnikov.project.postsapp.post.common.data.repository.PostRepository
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
+import krasnikov.project.postsapp.post.common.data.PostRepository
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.create.domain.validate.PostValidator
 import krasnikov.project.postsapp.utils.Result
 

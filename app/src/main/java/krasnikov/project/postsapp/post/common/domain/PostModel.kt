@@ -1,4 +1,4 @@
-package krasnikov.project.postsapp.post.common.domain.model
+package krasnikov.project.postsapp.post.common.domain
 
 import krasnikov.project.postsapp.userstatus.data.UserStatus
 

@@ -12,8 +12,10 @@ import androidx.fragment.app.replace
 import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.databinding.FragmentFeedPostsBinding
 import krasnikov.project.postsapp.post.create.ui.CreatePostFragment
-import krasnikov.project.postsapp.post.feed.ui.adapter.PostAdapter
+import krasnikov.project.postsapp.post.feed.ui.model.PostUIModel
+import krasnikov.project.postsapp.utils.Resource
 import krasnikov.project.postsapp.utils.Result
+import krasnikov.project.postsapp.utils.visibleOrGone
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostsFragment : Fragment() {
@@ -36,8 +38,7 @@ class PostsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecycler()
-        observePosts()
-        observeStatusLoadedFromRemote()
+        observeContent()
         setupBtnListeners()
     }
 
@@ -52,25 +53,30 @@ class PostsFragment : Fragment() {
         }
     }
 
-    private fun observePosts() {
-        postsViewModel.posts.observe(viewLifecycleOwner) {
+    private fun observeContent() {
+        postsViewModel.content.observe(viewLifecycleOwner) {
             when (it) {
-                is Result.Success -> {
+                is Resource.Loading -> {
+                    showLoading()
+                }
+                is Resource.Content -> {
+                    hideLoading()
                     adapter.submitList(it.data)
                 }
-                is Result.Error -> {
+                is Resource.Error -> {
+                    hideLoading()
                     showToast(R.string.error_loading)
                 }
             }
         }
     }
 
-    private fun observeStatusLoadedFromRemote() {
-        postsViewModel.errorLoadFromRemote.observe(viewLifecycleOwner) {
-            if (it) {
-                showToast(R.string.error_refreshing)
-            }
-        }
+    private fun showLoading() {
+        binding.pbLoading.visibleOrGone(true)
+    }
+
+    private fun hideLoading() {
+        binding.pbLoading.visibleOrGone(false)
     }
 
     private fun showToast(@StringRes stringRes: Int) {

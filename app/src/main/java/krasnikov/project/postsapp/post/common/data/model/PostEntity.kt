@@ -1,4 +1,4 @@
-package krasnikov.project.postsapp.post.common.data.source.local.entity
+package krasnikov.project.postsapp.post.common.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

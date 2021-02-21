@@ -1,7 +1,7 @@
 package krasnikov.project.postsapp.post.common.data.mapper
 
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
-import krasnikov.project.postsapp.post.common.data.source.remote.model.PostResponse
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
+import krasnikov.project.postsapp.post.common.data.model.PostResponse
 
 class PostResponseMapper {
 

@@ -1,8 +1,7 @@
 package krasnikov.project.postsapp.post.common.data.source.local
 
 import androidx.lifecycle.LiveData
-import krasnikov.project.postsapp.post.common.data.source.local.dao.PostDao
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.utils.AppMultithreading
 import krasnikov.project.postsapp.utils.Result
 import krasnikov.project.postsapp.utils.mapAsync
@@ -12,8 +11,8 @@ class LocalPostDataSource(
     private val multithreading: AppMultithreading
 ) {
 
-    fun observePosts(): LiveData<Result<List<PostEntity>>> {
-        return postDao.observePosts().mapAsync { Result.Success(it) }
+    fun observePosts(): LiveData<List<PostEntity>> {
+        return postDao.observePosts()
     }
 
     fun savePost(post: PostEntity) {

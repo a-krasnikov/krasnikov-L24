@@ -1,7 +1,7 @@
 package krasnikov.project.postsapp.app.di
 
-import krasnikov.project.postsapp.post.common.data.repository.PostRepository
-import krasnikov.project.postsapp.userstatus.data.repository.UserStatusRepository
+import krasnikov.project.postsapp.post.common.data.PostRepository
+import krasnikov.project.postsapp.userstatus.data.UserStatusRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {

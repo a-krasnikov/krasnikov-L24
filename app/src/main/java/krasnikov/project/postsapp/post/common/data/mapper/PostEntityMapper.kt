@@ -1,8 +1,8 @@
 package krasnikov.project.postsapp.post.common.data.mapper
 
-import krasnikov.project.postsapp.post.common.data.source.local.entity.PostEntity
-import krasnikov.project.postsapp.post.common.domain.model.PostModel
-import krasnikov.project.postsapp.userstatus.data.repository.UserStatusRepository
+import krasnikov.project.postsapp.post.common.data.model.PostEntity
+import krasnikov.project.postsapp.post.common.domain.PostModel
+import krasnikov.project.postsapp.userstatus.data.UserStatusRepository
 
 class PostEntityMapper(private val userStatusRepository: UserStatusRepository) {
 

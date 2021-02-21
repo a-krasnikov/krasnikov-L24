@@ -1,4 +1,4 @@
-package krasnikov.project.postsapp.post.feed.ui.adapter
+package krasnikov.project.postsapp.post.feed.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -60,7 +60,7 @@ class PostAdapter : ListAdapter<PostUIModel, RecyclerView.ViewHolder>(PostDiffCa
             binding.tvUserId.text = resources.getString(R.string.item_user_id, post.userId)
             binding.tvTitle.text = post.title
             binding.tvBody.text = post.body
-            binding.root.setBackgroundColor(post.backgroundColor)
+            binding.root.setCardBackgroundColor(post.backgroundColor)
             binding.tvWarning.visibleOrGone(post.isVisibleWarning)
         }
     }
