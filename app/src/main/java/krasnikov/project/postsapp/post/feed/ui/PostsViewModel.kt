@@ -24,17 +24,17 @@ class PostsViewModel(
 
     init {
         loadFromDb()
-        loadPostsFromRemote()
+        refreshData()
     }
 
     private fun loadFromDb() {
-        _content.value = Resource.Loading
         _content.addSource(postRepository.observePosts()) {
+            _content.value = Resource.Loading
             _content.value = Resource.Content(postUIMapper.map(sortPostsUseCase(it)))
         }
     }
 
-    fun loadPostsFromRemote() {
+    fun refreshData() {
         _content.value = Resource.Loading
         cancelableOperation = postRepository.refreshPostsFromRemote().postOnMainThread {
             if (it is Result.Error) {
