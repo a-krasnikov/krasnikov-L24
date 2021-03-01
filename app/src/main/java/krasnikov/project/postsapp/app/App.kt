@@ -20,7 +20,6 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 listOf(
-                    multithreadingModule,
                     networkModule,
                     dbModule,
                     dataSourceModule,

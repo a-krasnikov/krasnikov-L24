@@ -13,10 +13,7 @@ import androidx.fragment.app.replace
 import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.databinding.FragmentFeedPostsBinding
 import krasnikov.project.postsapp.post.create.ui.CreatePostFragment
-import krasnikov.project.postsapp.post.feed.ui.model.PostUIModel
 import krasnikov.project.postsapp.utils.Resource
-import krasnikov.project.postsapp.utils.Result
-import krasnikov.project.postsapp.utils.visibleOrGone
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostsFragment : Fragment() {

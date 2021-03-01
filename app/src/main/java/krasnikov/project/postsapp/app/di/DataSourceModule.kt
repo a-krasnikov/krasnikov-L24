@@ -5,6 +5,6 @@ import krasnikov.project.postsapp.post.common.data.source.remote.RemotePostDataS
 import org.koin.dsl.module
 
 val dataSourceModule = module {
-    single { RemotePostDataSource(get(), get()) }
+    single { RemotePostDataSource(get()) }
     single { LocalPostDataSource(get()) }
 }

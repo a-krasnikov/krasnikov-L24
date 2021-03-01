@@ -2,6 +2,7 @@ package krasnikov.project.postsapp.post.feed.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,6 @@ import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.databinding.RecyclerItemPostBannedBinding
 import krasnikov.project.postsapp.databinding.RecyclerItemPostBinding
 import krasnikov.project.postsapp.post.feed.ui.model.PostUIModel
-import krasnikov.project.postsapp.utils.visibleOrGone
 
 class PostAdapter : ListAdapter<PostUIModel, RecyclerView.ViewHolder>(PostDiffCallback()) {
 
@@ -61,7 +61,7 @@ class PostAdapter : ListAdapter<PostUIModel, RecyclerView.ViewHolder>(PostDiffCa
             binding.tvTitle.text = post.title
             binding.tvBody.text = post.body
             binding.root.setCardBackgroundColor(post.backgroundColor)
-            binding.tvWarning.visibleOrGone(post.isVisibleWarning)
+            binding.tvWarning.isVisible = post.isVisibleWarning
         }
     }
 
