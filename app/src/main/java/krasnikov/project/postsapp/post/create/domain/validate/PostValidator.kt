@@ -3,18 +3,12 @@ package krasnikov.project.postsapp.post.create.domain.validate
 import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.create.domain.validate.error.ValidationError
-import krasnikov.project.postsapp.utils.Result
 
 class PostValidator {
 
-    fun validate(post: PostEntity): Result<Unit> {
-        try {
-            validateTitle(post.title)
-            validateBody(post.body)
-        } catch (ex: Exception) {
-            return Result.Error(ex)
-        }
-        return Result.Success(Unit)
+    fun validate(post: PostEntity) {
+        validateTitle(post.title)
+        validateBody(post.body)
     }
 
     private fun validateTitle(title: String) {

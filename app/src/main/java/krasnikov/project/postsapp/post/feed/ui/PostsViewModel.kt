@@ -1,13 +1,15 @@
 package krasnikov.project.postsapp.post.feed.ui
 
 import androidx.lifecycle.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import krasnikov.project.postsapp.post.common.data.PostRepository
 import krasnikov.project.postsapp.post.feed.domain.SortPostsUseCase
 import krasnikov.project.postsapp.post.feed.ui.mapper.PostUIMapper
 import krasnikov.project.postsapp.post.feed.ui.model.PostUIModel
-import krasnikov.project.postsapp.utils.CancelableOperation
 import krasnikov.project.postsapp.utils.Resource
-import krasnikov.project.postsapp.utils.Result
+import java.lang.Exception
 
 class PostsViewModel(
     private val postRepository: PostRepository,
@@ -20,7 +22,7 @@ class PostsViewModel(
     val content
         get() = _content as LiveData<Resource<List<PostUIModel>>>
 
-    private lateinit var cancelableOperation: CancelableOperation
+    private val compositeDisposable = CompositeDisposable()
 
     init {
         loadFromDb()
@@ -28,23 +30,32 @@ class PostsViewModel(
     }
 
     private fun loadFromDb() {
-        _content.addSource(postRepository.observePosts()) {
-            _content.value = Resource.Loading
-            _content.value = Resource.Content(postUIMapper.map(sortPostsUseCase(it)))
-        }
+        compositeDisposable.add(
+            postRepository.observePosts().map { postUIMapper.map(sortPostsUseCase(it)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ userList ->
+                    _content.value = Resource.Content(userList)
+                }, { throwable ->
+                    _content.value = Resource.Error(Exception(throwable))
+                })
+        )
     }
 
     fun refreshData() {
         _content.value = Resource.Loading
-        cancelableOperation = postRepository.refreshPostsFromRemote().postOnMainThread {
-            if (it is Result.Error) {
-                _content.value = Resource.Error(it.exception)
-            }
-        }
+        compositeDisposable.add(
+            postRepository.refreshPostsFromRemote()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, { throwable ->
+                    _content.value = Resource.Error(Exception(throwable))
+                })
+        )
     }
 
     override fun onCleared() {
-        cancelableOperation.cancel()
         super.onCleared()
+        compositeDisposable.dispose()
     }
 }

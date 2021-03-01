@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -24,7 +25,7 @@ class PostsFragment : Fragment() {
 
     private val postsViewModel by viewModel<PostsViewModel>()
 
-    private val adapter by lazy { PostAdapter() }
+    private val adapter = PostAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,11 +73,11 @@ class PostsFragment : Fragment() {
     }
 
     private fun showLoading() {
-        binding.pbLoading.visibleOrGone(true)
+        binding.pbLoading.isVisible = true
     }
 
     private fun hideLoading() {
-        binding.pbLoading.visibleOrGone(false)
+        binding.pbLoading.isVisible = false
     }
 
     private fun showToast(@StringRes stringRes: Int) {

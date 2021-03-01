@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.app.App
 import krasnikov.project.postsapp.databinding.FragmentCreatePostBinding
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.create.domain.validate.error.ValidationError
-import krasnikov.project.postsapp.utils.Result
+import krasnikov.project.postsapp.utils.Resource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreatePostFragment : Fragment() {
@@ -31,8 +32,10 @@ class CreatePostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupBtnListeners()
         setupUser()
+        observeContent()
     }
 
     private fun setupUser() {
@@ -41,7 +44,7 @@ class CreatePostFragment : Fragment() {
 
     private fun setupBtnListeners() {
         binding.btnCreate.setOnClickListener {
-            createPost()
+            createPostViewModel.createPost(createPostModel())
         }
 
         binding.btnCancel.setOnClickListener {
@@ -49,14 +52,21 @@ class CreatePostFragment : Fragment() {
         }
     }
 
-    private fun createPost() {
-        when (val result = createPostViewModel.createPost(createPostModel())) {
-            is Result.Success -> {
-                showToast(R.string.text_post_created)
-                parentFragmentManager.popBackStack()
-            }
-            is Result.Error -> {
-                showError(result.exception)
+    private fun observeContent() {
+        createPostViewModel.content.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Loading -> {
+                    showLoading()
+                }
+                is Resource.Content -> {
+                    hideLoading()
+                    showToast(R.string.text_post_created)
+                    parentFragmentManager.popBackStack()
+                }
+                is Resource.Error -> {
+                    hideLoading()
+                    showError(it.exception)
+                }
             }
         }
     }
@@ -75,6 +85,14 @@ class CreatePostFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.pbLoading.isVisible = true
+    }
+
+    private fun hideLoading() {
+        binding.pbLoading.isVisible = false
     }
 
     private fun showToast(@StringRes stringRes: Int) {

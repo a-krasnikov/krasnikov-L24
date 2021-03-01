@@ -1,29 +1,20 @@
 package krasnikov.project.postsapp.post.common.data.source.local
 
-import androidx.lifecycle.LiveData
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
-import krasnikov.project.postsapp.utils.AppMultithreading
-import krasnikov.project.postsapp.utils.Result
-import krasnikov.project.postsapp.utils.mapAsync
 
-class LocalPostDataSource(
-    private val postDao: PostDao,
-    private val multithreading: AppMultithreading
-) {
+class LocalPostDataSource(private val postDao: PostDao) {
 
-    fun observePosts(): LiveData<List<PostEntity>> {
+    fun observePosts(): Flowable<List<PostEntity>> {
         return postDao.observePosts()
     }
 
-    fun savePost(post: PostEntity) {
-        multithreading.executeOnBackgroundThread {
-            postDao.insert(post)
-        }
+    fun savePost(post: PostEntity): Completable {
+        return postDao.insert(post)
     }
 
-    fun refreshRemotePosts(posts: Collection<PostEntity>) {
-        multithreading.executeOnBackgroundThread {
-            postDao.updateRemotePosts(posts)
-        }
+    fun refreshRemotePosts(posts: Collection<PostEntity>): Completable {
+        return postDao.updateRemotePosts(posts)
     }
 }
