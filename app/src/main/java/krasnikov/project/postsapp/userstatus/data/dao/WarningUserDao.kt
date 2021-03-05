@@ -3,7 +3,6 @@ package krasnikov.project.postsapp.userstatus.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import io.reactivex.Completable
 import krasnikov.project.postsapp.userstatus.data.entity.WarningUserEntity
 
 @Dao
@@ -12,5 +11,5 @@ interface WarningUserDao {
     fun getAll(): List<WarningUserEntity>
 
     @Insert
-    fun insert(user: WarningUserEntity): Completable
+    fun insert(user: WarningUserEntity)
 }

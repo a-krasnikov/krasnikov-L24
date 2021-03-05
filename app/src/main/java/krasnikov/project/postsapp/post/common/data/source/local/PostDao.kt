@@ -4,33 +4,26 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
 
 @Dao
-abstract class PostDao {
+interface PostDao {
 
     @Query("SELECT * FROM posts")
-    abstract fun observePosts(): Flowable<List<PostEntity>>
+    fun observePosts(): Flow<List<PostEntity>>
 
     @Insert
-    abstract fun insert(post: PostEntity): Completable
+    suspend fun insert(post: PostEntity)
 
     @Insert
-    protected abstract fun insertAll(posts: Collection<PostEntity>)
+    suspend fun insertAll(posts: Collection<PostEntity>)
 
     @Query("DELETE FROM posts where is_local = 0")
-    protected abstract fun deleteRemotePosts()
-
-    fun updateRemotePosts(posts: Collection<PostEntity>): Completable {
-        return Completable.fromAction {
-            updateRemotePostsTransaction(posts)
-        }
-    }
+    suspend fun deleteRemotePosts()
 
     @Transaction
-    protected open fun updateRemotePostsTransaction(posts: Collection<PostEntity>) {
+    suspend fun updateRemotePosts(posts: Collection<PostEntity>) {
         deleteRemotePosts()
         insertAll(posts)
     }

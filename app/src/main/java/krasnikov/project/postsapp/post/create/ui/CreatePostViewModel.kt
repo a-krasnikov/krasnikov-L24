@@ -3,9 +3,9 @@ package krasnikov.project.postsapp.post.create.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.create.domain.CreatePostUseCase
 import krasnikov.project.postsapp.utils.Resource
@@ -18,23 +18,14 @@ class CreatePostViewModel(private val createPostUseCase: CreatePostUseCase) : Vi
     val content
         get() = _content as LiveData<Resource<Unit>>
 
-    private val compositeDisposable = CompositeDisposable()
-
-    fun createPost(post: PostEntity) {
-        compositeDisposable.add(
-            createPostUseCase(post)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _content.value = Resource.Content(Unit)
-                }, { throwable ->
-                    _content.value = Resource.Error(Exception(throwable))
-                })
-        )
+    private val handlerError = CoroutineExceptionHandler { _, exception ->
+        _content.value = Resource.Error(exception as Exception)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
+    fun createPost(post: PostEntity) {
+        viewModelScope.launch(handlerError) {
+            createPostUseCase(post)
+            _content.value = Resource.Content(Unit)
+        }
     }
 }

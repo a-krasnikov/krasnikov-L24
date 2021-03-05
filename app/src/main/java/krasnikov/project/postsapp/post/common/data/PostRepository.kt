@@ -1,7 +1,9 @@
 package krasnikov.project.postsapp.post.common.data
 
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import krasnikov.project.postsapp.post.common.data.mapper.PostEntityMapper
 import krasnikov.project.postsapp.post.common.data.mapper.PostResponseMapper
 import krasnikov.project.postsapp.post.common.data.source.local.LocalPostDataSource
@@ -13,22 +15,25 @@ class PostRepository(
     private val remoteDataSource: RemotePostDataSource,
     private val localDataSource: LocalPostDataSource,
     private val postResponseMapper: PostResponseMapper,
-    private val postEntityMapper: PostEntityMapper
+    private val postEntityMapper: PostEntityMapper,
+    private val ioDispatcher: CoroutineDispatcher,
 ) {
 
-    fun observePosts(): Flowable<List<PostModel>> {
+    fun observePosts(): Flow<List<PostModel>> {
         return localDataSource.observePosts().map {
             postEntityMapper.map(it)
+        }.flowOn(ioDispatcher)
+    }
+
+    suspend fun savePost(post: PostEntity) {
+        withContext(ioDispatcher) {
+            localDataSource.savePost(post)
         }
     }
 
-    fun savePost(post: PostEntity): Completable {
-        return localDataSource.savePost(post)
-    }
-
-    fun refreshPostsFromRemote(): Completable {
-        return remoteDataSource.getAllPosts().flatMapCompletable {
-            localDataSource.refreshRemotePosts(postResponseMapper.map(it))
+    suspend fun refreshPostsFromRemote() {
+        withContext(ioDispatcher) {
+            localDataSource.refreshRemotePosts(postResponseMapper.map(remoteDataSource.getAllPosts()))
         }
     }
 }

@@ -6,6 +6,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { PostsViewModel(get(), get(), get()) }
+    viewModel { PostsViewModel(get(), get()) }
     viewModel { CreatePostViewModel(get()) }
 }
