@@ -19,7 +19,8 @@ class PostRepository(
     private val ioDispatcher: CoroutineDispatcher,
 ) {
 
-    fun observePosts(): Flow<List<PostModel>> {
+    suspend fun observePosts(): Flow<List<PostModel>> {
+        refreshPostsFromRemote()
         return localDataSource.observePosts().map {
             postEntityMapper.map(it)
         }.flowOn(ioDispatcher)

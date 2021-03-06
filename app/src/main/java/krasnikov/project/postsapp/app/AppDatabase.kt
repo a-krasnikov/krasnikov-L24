@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import krasnikov.project.postsapp.post.common.data.source.local.PostDao
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.userstatus.data.dao.BannedUserDao
@@ -43,7 +45,7 @@ abstract class AppDatabase : RoomDatabase() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     getInstance(context).run {
-                        transactionExecutor.execute {
+                        GlobalScope.launch {
                             bannedUserDao().insert(BannedUserEntity(2))
                             warningUserDao().insert(WarningUserEntity(1))
                         }

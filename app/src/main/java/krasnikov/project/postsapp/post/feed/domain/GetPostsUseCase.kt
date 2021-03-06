@@ -11,7 +11,7 @@ class GetPostsUseCase(
     private val postRepository: PostRepository,
     private val defaultDispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke(): Flow<List<PostModel>> {
+    suspend operator fun invoke(): Flow<List<PostModel>> {
         return postRepository.observePosts().map { posts ->
             val (local, remote) = posts.partition { it.isLocal }
             local.sortedByDescending { it.id } + remote.sortedBy { it.id }
