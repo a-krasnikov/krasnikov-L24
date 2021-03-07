@@ -1,10 +1,11 @@
 package krasnikov.project.postsapp.post.create.domain.validate
 
+import android.content.res.Resources
 import krasnikov.project.postsapp.R
 import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.create.domain.validate.error.ValidationError
 
-class PostValidator {
+class PostValidator(private val resources: Resources) {
 
     fun validate(post: PostEntity) {
         validateTitle(post.title)
@@ -16,7 +17,7 @@ class PostValidator {
             throw ValidationError(R.string.error_post_title_length_validation)
         }
 
-        val pattern = "(?iu)Реклама|Товар|Куплю"
+        val pattern = resources.getString(R.string.validate_pattern_title)
         if (title.matches(Regex(pattern))) {
             throw ValidationError(R.string.error_post_title_content_validation)
         }

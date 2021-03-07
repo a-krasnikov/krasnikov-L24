@@ -10,11 +10,9 @@ val useCaseModule = module {
     factory {
         CreatePostUseCase(
             get(),
-            providePostValidator(),
+            get(),
             get(qualifier = named(Dispatcher.DEFAULT))
         )
     }
     factory { GetPostsUseCase(get(), get(qualifier = named(Dispatcher.DEFAULT))) }
 }
-
-fun providePostValidator(): PostValidator = PostValidator()

@@ -27,7 +27,8 @@ class App : Application() {
                     repositoryModule,
                     viewModelModule,
                     useCaseModule,
-                    dispatchersModule
+                    dispatchersModule,
+                    domainModule
                 )
             )
         }

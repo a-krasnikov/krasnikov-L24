@@ -11,6 +11,8 @@
     <string name="btn_title_create">Create</string>
     <string name="btn_title_cancel">Cancel</string>
 
+    <string name="validate_pattern_title">(?iu)Реклама|Товар|Куплю</string>
+
     <!-- Error -->
     <string name="error_loading">Error loading data</string>
     <string name="error_refreshing">Error refreshing data</string>
