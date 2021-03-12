@@ -33,22 +33,22 @@ internal class CreatePostUseCaseTest {
     }
 
     @Test
-    fun `if validation passed then post is created`() {
+    fun `if validation passed then post is created`() = runBlockingTest {
         val repository = mockk<PostRepository>(relaxUnitFun = true)
         val postValidator = mockk<PostValidator>(relaxUnitFun = true)
         val post = mockk<PostEntity>()
 
         val createPostUseCase = CreatePostUseCase(repository, postValidator, testDispatcher)
-        runBlockingTest { createPostUseCase.invoke(post) }
+        createPostUseCase.invoke(post)
 
-        verifySequence {
+        coVerifySequence {
             postValidator.validate(post)
-            runBlockingTest { repository.savePost(post) }
+            repository.savePost(post)
         }
     }
 
     @Test
-    fun `if validation fail then post is not created`() {
+    fun `if validation fail then post is not created`() = runBlockingTest {
         val repository = mockk<PostRepository>(relaxUnitFun = true)
         val postValidator = mockk<PostValidator>() {
             every { validate(any()) } throws ValidationError(R.string.error_post_body_length_validation)
@@ -57,9 +57,9 @@ internal class CreatePostUseCaseTest {
 
         val createPostUseCase = CreatePostUseCase(repository, postValidator, testDispatcher)
 
-        assertFailsWith<ValidationError> { runBlockingTest { createPostUseCase.invoke(post) } }
+        assertFailsWith<ValidationError> { createPostUseCase.invoke(post) }
 
         verify { postValidator.validate(post) }
-        verify(inverse = true) { runBlockingTest { repository.savePost(post) } }
+        coVerify(inverse = true) { repository.savePost(post) }
     }
 }
