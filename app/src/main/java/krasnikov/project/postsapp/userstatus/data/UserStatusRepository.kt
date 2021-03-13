@@ -22,14 +22,11 @@ class UserStatusRepository(
             refreshWarningUsers()
         }
 
-        bannedUsers.find { it.id == id }?.let {
-            return UserStatus.BANNED
+        return when {
+            bannedUsers.any { it.id == id } -> UserStatus.BANNED
+            warningUsers.any { it.id == id } -> UserStatus.WITH_WARNING
+            else -> UserStatus.STANDART
         }
-        warningUsers.find { it.id == id }?.let {
-            return UserStatus.WITH_WARNING
-        }
-
-        return UserStatus.STANDART
     }
 
     private fun refreshBannedUsers() {

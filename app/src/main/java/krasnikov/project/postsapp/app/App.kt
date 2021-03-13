@@ -1,3 +1,4 @@
+@file:Suppress("WildcardImport")
 package krasnikov.project.postsapp.app
 
 import android.app.Application

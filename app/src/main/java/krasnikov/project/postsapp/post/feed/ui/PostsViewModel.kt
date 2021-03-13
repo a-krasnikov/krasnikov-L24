@@ -1,12 +1,13 @@
 package krasnikov.project.postsapp.post.feed.ui
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineExceptionHandler
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import krasnikov.project.postsapp.post.common.data.PostRepository
 import krasnikov.project.postsapp.post.feed.domain.GetPostsUseCase
 import krasnikov.project.postsapp.post.feed.ui.mapper.PostUIMapper
 import krasnikov.project.postsapp.post.feed.ui.model.PostUIModel

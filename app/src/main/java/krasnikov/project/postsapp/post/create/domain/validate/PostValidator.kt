@@ -7,13 +7,18 @@ import krasnikov.project.postsapp.post.create.domain.validate.error.ValidationEr
 
 class PostValidator(private val resources: Resources) {
 
+    @Suppress("MagicNumber")
+    private val validTitleLength = 3..50
+    @Suppress("MagicNumber")
+    private val validBodyLength = 5..500
+
     fun validate(post: PostEntity) {
         validateTitle(post.title)
         validateBody(post.body)
     }
 
     private fun validateTitle(title: String) {
-        if (title.length !in (3..50)) {
+        if (title.length !in validTitleLength) {
             throw ValidationError(R.string.error_post_title_length_validation)
         }
 
@@ -24,7 +29,7 @@ class PostValidator(private val resources: Resources) {
     }
 
     private fun validateBody(body: String) {
-        if (body.length !in (5..500)) {
+        if (body.length !in validBodyLength) {
             throw ValidationError(R.string.error_post_body_length_validation)
         }
     }
