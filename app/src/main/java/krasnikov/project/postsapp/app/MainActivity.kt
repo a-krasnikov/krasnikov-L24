@@ -1,7 +1,7 @@
 package krasnikov.project.postsapp.app
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import krasnikov.project.postsapp.R
 
 class MainActivity : AppCompatActivity() {
