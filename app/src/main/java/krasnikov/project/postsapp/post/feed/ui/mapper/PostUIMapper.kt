@@ -19,7 +19,7 @@ class PostUIMapper {
                     title = source.title,
                     body = source.body,
                     backgroundColor = if (source.status == UserStatus.WITH_WARNING) Color.RED else Color.TRANSPARENT,
-                    isVisibleWarning = false
+                    isVisibleWarning = source.status == UserStatus.WITH_WARNING
                 )
             }
         }
