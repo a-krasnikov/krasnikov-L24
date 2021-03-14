@@ -1,10 +1,9 @@
 package krasnikov.project.postsapp.post.feed.domain
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verifySequence
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -12,10 +11,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import krasnikov.project.postsapp.post.common.data.PostRepository
-import krasnikov.project.postsapp.post.common.data.model.PostEntity
 import krasnikov.project.postsapp.post.common.domain.PostModel
-import krasnikov.project.postsapp.post.create.domain.CreatePostUseCase
-import krasnikov.project.postsapp.post.create.domain.validate.PostValidator
 import krasnikov.project.postsapp.userstatus.data.UserStatus
 import org.junit.After
 import org.junit.Before
@@ -23,6 +19,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
+@ExperimentalCoroutinesApi
 internal class GetPostsUseCaseTest {
 
     private val testDispatcher = TestCoroutineDispatcher()

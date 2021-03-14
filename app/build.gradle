@@ -36,12 +36,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
@@ -69,5 +63,6 @@ dependencies {
     testImplementation('org.jetbrains.kotlin:kotlin-test-junit:1.4.21')
     testImplementation "io.mockk:mockk:1.10.6"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
 }
