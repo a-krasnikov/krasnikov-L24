@@ -3,4 +3,6 @@
     <dimen name="post_card_height">128dp</dimen>
     <dimen name="text_padding">8dp</dimen>
     <dimen name="card_margin">8dp</dimen>
+    <dimen name="min_body_height">256dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
